@@ -105,7 +105,7 @@ function App() {
         onConfirm={handleAcceptClick}
       >
         <h3>Add a todo</h3>
-        <Input onChange={setPopupInputValue} value={popupInputValue}/>
+        <Input onChange={setPopupInputValue} value={popupInputValue || ''} />
       </PopUp>
     </div>
   );

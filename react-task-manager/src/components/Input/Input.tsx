@@ -2,8 +2,8 @@ import style from './Input.module.scss';
 
 type InputProps = {
     onChange: (value: string) => void;
-    value?: string; 
-}
+    value: string; 
+};
 
 const Input = ({ onChange, value }: InputProps) => {
     return (
