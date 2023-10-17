@@ -27,6 +27,20 @@
   overflow-y: auto;
   overflow-x: hidden;
   box-shadow: 0 4px 8px var(--shadow-color);
+  width: 20rem;
+
+  .CardActionsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .InnerCardActionsContainer {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .ListContainer {
@@ -64,4 +78,3 @@
     }
   }
 }
-

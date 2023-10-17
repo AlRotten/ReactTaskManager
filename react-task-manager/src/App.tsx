@@ -2,7 +2,9 @@ import { useCallback, useState } from 'react';
 import style from './App.module.scss';
 import PopUp from './components/Popup/Popup';
 import Button from './components/Button/Button';
-import { ButtonTypes } from './types';
+import { ButtonTypes } from './constants';
+import { ActionsLabels } from './constants';
+import Input from './components/Input/Input';
 
 function App() {
   const [textList, setTextList] = useState<string[]>();
@@ -81,23 +83,29 @@ function App() {
         <ul className={style.ListContainer}>
           {textList && textList.map(mapListItemsToElements)}
         </ul>
-        <Button label={'DELETE'} onClick={deleteSelectedListItems} />
-        <Button label={'ADD'} onClick={() => setIsPopupVisible(true)} type={ButtonTypes.ADD} />
+        <div className={style.CardActionsContainer}>
+          <div className={style.InnerCardActionsContainer}>
+            <Button onClick={() => {}} >
+              UNDO
+            </Button>
+            <Button onClick={deleteSelectedListItems}>
+              {ActionsLabels.DELETE}
+            </Button>
+          </div>
+          <Button onClick={() => setIsPopupVisible(true)} type={ButtonTypes.ADD} >
+            {ActionsLabels.ADD}
+          </Button>
+        </div>
       </div>
       <PopUp
         isOpen={isPopupVisible}
         closeButtonLabel='CANCEL' 
         className={style.Card} 
         onClose={handleCancelClick}
+        onConfirm={handleAcceptClick}
       >
         <h3>Add a todo</h3>
-        <input 
-          onChange={(event) => setPopupInputValue(event.target.value)}
-          className={style.StandardInput} 
-          type="text"
-          value={popupInputValue}
-        />
-        <Button label='ADD' onClick={handleAcceptClick} type={ButtonTypes.ADD} />
+        <Input onChange={setPopupInputValue} value={popupInputValue}/>
       </PopUp>
     </div>
   );

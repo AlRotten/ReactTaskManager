@@ -1,17 +1,25 @@
+import { ActionsLabels, ButtonTypes } from "../../constants";
+import Button from "../Button/Button";
 import style from "./PopUp.module.scss";
 
 interface PopUpProps {
   isOpen: boolean;
   onClose: () => void;
+  onConfirm?: () => void;
   children: JSX.Element | JSX.Element[];
-  className: string | undefined;
-  closeButtonLabel: string | undefined;
+  className?: string;
+  closeButtonLabel?: string;
 }
 
 function PopUp(props: PopUpProps) {
-  const { isOpen, onClose, children, className, closeButtonLabel } = props;
+  const { isOpen, onClose, onConfirm, children, className, closeButtonLabel } = props;
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) onClose();
+  };
+  const handleConfirm = () => {
+    if (!onConfirm) return;
+    
+    onConfirm();
   };
 
   return (
@@ -26,9 +34,12 @@ function PopUp(props: PopUpProps) {
         className={style.PopUpContent}
       >
         {children}
-        <button type="button" className={`${style.StandardButton} ${style.CloseButton}`} onClick={onClose}>
-          {closeButtonLabel || "CANCEL"}
-        </button>
+        <Button onClick={onClose} >
+          {closeButtonLabel || ActionsLabels.CANCEL}
+        </Button>
+        <Button onClick={handleConfirm} type={ButtonTypes.ADD} >
+          {ActionsLabels.ADD}
+        </Button>
       </div>
     </div>
   );
