@@ -28,6 +28,14 @@ function App() {
   const deleteListItem = (index: number) => {
     if (!textList) return;
 
+    const newActionHistory = [
+      ...actionHistory,
+      { 
+        action: ActionsLabels.DELETE, 
+        text: textList[index],
+      },
+    ];
+
     const newList = textList.filter((_, i) => i !== index);
     setTextList(newList);
     setSelectedItems((prevSelected) =>
@@ -35,12 +43,8 @@ function App() {
         selectedItem > index ? selectedItem - 1 : selectedItem
       )
     );
-    setActionHistory([
-      ...actionHistory,
-      { 
-        action: ActionsLabels.DELETE, 
-        text: newList,
-      }]);
+
+    setActionHistory(newActionHistory);
   };
 
   const deleteSelectedListItems = () => {
@@ -74,8 +78,7 @@ function App() {
       [ActionsLabels.DELETE]: () => {
         if (!textList) return;
         
-        const updatedList = [...textList, lastAction.text as string];
-        setTextList(updatedList);
+        setTextList([...textList, lastAction.text as string]);
         setActionHistory(actionHistory.slice(0, -1));
       },
       [ActionsLabels.MULTIPLE_DELETE]: () => {
