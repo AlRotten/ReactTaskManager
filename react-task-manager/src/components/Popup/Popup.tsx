@@ -1,4 +1,4 @@
-import { ActionsLabels, ButtonTypes } from "../../constants";
+import { Actions, ButtonTypes } from "../../constants";
 import Button from "../Button/Button";
 import style from "./PopUp.module.scss";
 
@@ -12,7 +12,7 @@ interface PopUpProps {
 }
 
 function PopUp(props: PopUpProps) {
-  const { isOpen, onClose, onConfirm, children, className, closeButtonLabel } = props;
+  const { isOpen, onClose, onConfirm, children, className, closeButtonLabel = Actions.CANCEL} = props;
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) onClose();
   };
@@ -35,10 +35,13 @@ function PopUp(props: PopUpProps) {
       >
         {children}
         <Button onClick={onClose} >
-          {closeButtonLabel || ActionsLabels.CANCEL}
+          {closeButtonLabel}
         </Button>
-        <Button onClick={handleConfirm} type={ButtonTypes.ADD} >
-          {ActionsLabels.ADD}
+        <Button 
+          onClick={handleConfirm} 
+          type={ButtonTypes.ADD} 
+        >
+          {Actions.ADD}
         </Button>
       </div>
     </div>

@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import style from './App.module.scss';
 import PopUp from './components/Popup/Popup';
 import Button from './components/Button/Button';
 import { ButtonTypes } from './constants';
-import { ActionsLabels } from './constants';
+import { Actions } from './constants';
 import Input from './components/Input/Input';
 import RefreshIcon from './components/Icon/Icon';
 
@@ -13,7 +13,7 @@ function App() {
   const [popupInputValue, setPopupInputValue] = useState<string>('');
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [actionHistory, setActionHistory] = useState<{
-    action: ActionsLabels;
+    action: Actions;
     text: string[] | string;
   }[]>([]);
 
@@ -31,7 +31,7 @@ function App() {
     const newActionHistory = [
       ...actionHistory,
       { 
-        action: ActionsLabels.DELETE, 
+        action: Actions.DELETE, 
         text: textList[index],
       },
     ];
@@ -53,12 +53,12 @@ function App() {
     const newList = textList.filter((_, index) => !selectedItems.includes(index));
     setTextList(newList);
     setSelectedItems([]);
-    setActionHistory([...actionHistory, { action: ActionsLabels.MULTIPLE_DELETE, text: textList }]);
+    setActionHistory([...actionHistory, { action: Actions.MULTIPLE_DELETE, text: textList }]);
   };
 
   const addListItem = (text: string) => {
     setTextList([...textList, text]);
-    setActionHistory([...actionHistory, { action: ActionsLabels.ADD, text }]);
+    setActionHistory([...actionHistory, { action: Actions.ADD, text }]);
     setIsPopupVisible(false);
     setPopupInputValue('');
   };
@@ -67,27 +67,29 @@ function App() {
     if (!actionHistory.length) return;
   
     const lastAction = actionHistory[actionHistory.length - 1];
-    const ActionMapper: { [key in ActionsLabels]: () => void } = {
-      [ActionsLabels.ADD]: () => {
+    const ActionMapper: { [key in Actions]?: () => void } = {
+      [Actions.ADD]: () => {
         if (!textList) return;
   
         const updatedList = textList.slice(0, -1);
         setTextList(updatedList);
         setActionHistory(actionHistory.slice(0, -1));
       },
-      [ActionsLabels.DELETE]: () => {
+      [Actions.DELETE]: () => {
         if (!textList) return;
         
         setTextList([...textList, lastAction.text as string]);
         setActionHistory(actionHistory.slice(0, -1));
       },
-      [ActionsLabels.MULTIPLE_DELETE]: () => {
+      [Actions.MULTIPLE_DELETE]: () => {
         setTextList(lastAction.text as string[]);
         setActionHistory(actionHistory.slice(0, -1));
       }
     };
   
     const triggerLastActionUndo = ActionMapper[lastAction.action];
+    if (!triggerLastActionUndo) return;
+
     triggerLastActionUndo();
   };
 
@@ -117,6 +119,8 @@ function App() {
     );
   };
 
+  const isActionHistoryEmpty = useMemo(() => !actionHistory || actionHistory.length === 0, [actionHistory]);
+  
   return (
     <div className={style.App}>
       <div className={style.Card}>
@@ -126,21 +130,23 @@ function App() {
         </ul>
         <div className={style.CardActionsContainer}>
           <div className={style.InnerCardActionsContainer}>
-            <Button onClick={undo}>
-              <RefreshIcon />
+            <Button onClick={undo} disabled={isActionHistoryEmpty}>
+              <RefreshIcon disabled={isActionHistoryEmpty} />
             </Button>
-            <Button onClick={deleteSelectedListItems}>
-              {ActionsLabels.DELETE}
+            <Button 
+              onClick={deleteSelectedListItems} 
+              disabled={!selectedItems || selectedItems.length === 0}
+            >
+              {Actions.DELETE}
             </Button>
           </div>
           <Button onClick={() => setIsPopupVisible(true)} type={ButtonTypes.ADD}>
-            {ActionsLabels.ADD}
+            {Actions.ADD}
           </Button>
         </div>
       </div>
       <PopUp
         isOpen={isPopupVisible}
-        closeButtonLabel='CANCEL'
         className={style.Card}
         onClose={handleCancelClick}
         onConfirm={handleAcceptClick}
