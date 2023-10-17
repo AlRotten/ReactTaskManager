@@ -6,9 +6,10 @@ type ButtonProps = {
     onClick: () => void;
     type?: ButtonTypes;
     children?: ReactNode; 
+    disabled?: boolean;
 }
 
-const Button = ({ children, onClick, type = ButtonTypes.NONE }: ButtonProps) => {
+const Button = ({ children, onClick, type = ButtonTypes.NONE, disabled = false }: ButtonProps) => {
     const handleClickButton = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (event.target !== event.currentTarget) return;
         
@@ -17,7 +18,11 @@ const Button = ({ children, onClick, type = ButtonTypes.NONE }: ButtonProps) => 
     
     return (
         <button 
-          className={`${style.StandardButton} ${type === ButtonTypes.ADD ? style.AddButton : ''}`} 
+          className={`
+            ${style.StandardButton} 
+            ${type === ButtonTypes.ADD ? style.AddButton : ''} 
+            ${disabled ? style.Disabled : ''}
+          `} 
           onClick={handleClickButton}
         >
             {children}

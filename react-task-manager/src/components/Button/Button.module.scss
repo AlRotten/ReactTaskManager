@@ -11,5 +11,12 @@
     &.AddButton {
       background-color: var(--selected-color);
       color: var(--white-color);
+      margin-left: 10px;
+    }
+    
+    &.Disabled {
+      background-color: var(--disabled-color);
+      color: var(--white-color);
+      border: var(--disabled-color);
     }
 }

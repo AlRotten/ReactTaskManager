@@ -12,7 +12,8 @@
   --border-color: #CCCCCC;
   --text-color: #333333;
   --black-color: #000000cc;
-
+  
+  --disabled-color: #333333;
   --input-background-color: #F7F7F7;
   --list-item-background-color: var(--input-background-color);
 

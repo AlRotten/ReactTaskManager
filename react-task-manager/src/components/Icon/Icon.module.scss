@@ -3,4 +3,8 @@
     height: 100%;
     color: var(--selected-color);
     pointer-events: none;
+
+    &.Disabled {
+        color: var(--white-color);
+    }
 }
