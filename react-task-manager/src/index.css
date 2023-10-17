@@ -51,3 +51,7 @@ body {
   font-weight: 100;
   user-select: none;
 }
+
+h1, p {
+  margin: 0;
+}

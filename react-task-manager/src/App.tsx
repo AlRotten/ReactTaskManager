@@ -125,6 +125,11 @@ function App() {
     <div className={style.App}>
       <div className={style.Card}>
         <h1>Text List Manager</h1>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+          Non hic incidunt neque deserunt. 
+          Illum distinctio in quos sapiente ipsa minus.
+        </p>
         <ul className={style.ListContainer}>
           {textList && textList.map(mapListItemsToElements)}
         </ul>
