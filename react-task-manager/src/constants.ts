@@ -1,7 +1,7 @@
 export enum ActionsLabels {
     ADD = 'ADD',
     DELETE = 'DELETE',
-    CANCEL = 'CANCEL',
+    MULTIPLE_DELETE = 'MULTIPLE_DELETE',
 } 
 
 export enum ButtonTypes {
